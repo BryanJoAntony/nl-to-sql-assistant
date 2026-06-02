@@ -135,7 +135,7 @@ def test_query_endpoint_blocked_sql_returns_400(client):
     data = response.get_json()
 
     assert data["success"] is False
-    assert data["error_code"] == "SQL_VALIDATION_BLOCKED"
+    assert data["error_code"] == "REQUEST_BLOCKED_BY_SAFETY"
     assert data["details"]["safety"]["blocked"] is True
 
 
