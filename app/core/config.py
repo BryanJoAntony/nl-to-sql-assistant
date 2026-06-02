@@ -19,20 +19,7 @@ class Settings:
     FLASK_DEBUG: bool = os.getenv("FLASK_DEBUG", "True").lower() == "true"
 
     OPENAI_API_KEY: str | None = os.getenv("OPENAI_API_KEY")
-    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
-
-    ENABLE_RATE_LIMITING: bool = (
-        os.getenv("ENABLE_RATE_LIMITING", "True").lower() == "true"
-    )
-
-    RATE_LIMIT_STORAGE_URI: str = os.getenv(
-        "RATE_LIMIT_STORAGE_URI",
-        "redis://localhost:6379/0",
-    )
-
-    RATE_LIMIT_DEFAULT: str = os.getenv("RATE_LIMIT_DEFAULT", "100 per hour")
-
-    RATE_LIMIT_QUERY: str = os.getenv("RATE_LIMIT_QUERY", "30 per minute")
+    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-5-mini")
 
     DATABASE_PATH: str = os.getenv("DATABASE_PATH", "data/safe_analytics.db")
 
@@ -49,6 +36,18 @@ class Settings:
         os.getenv("ENABLE_API_KEY_AUTH", "False").lower() == "true"
     )
     APP_API_KEY: str | None = os.getenv("APP_API_KEY")
+
+    ENABLE_RATE_LIMITING: bool = (
+        os.getenv("ENABLE_RATE_LIMITING", "True").lower() == "true"
+    )
+
+    RATE_LIMIT_STORAGE_URI: str = os.getenv(
+        "RATE_LIMIT_STORAGE_URI",
+        "memory://",
+    )
+
+    RATE_LIMIT_DEFAULT: str = os.getenv("RATE_LIMIT_DEFAULT", "100 per hour")
+    RATE_LIMIT_QUERY: str = os.getenv("RATE_LIMIT_QUERY", "30 per minute")
 
     @property
     def database_full_path(self) -> Path:

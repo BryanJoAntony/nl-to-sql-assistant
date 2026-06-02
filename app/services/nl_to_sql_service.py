@@ -4,9 +4,10 @@ from app.core.logger import error_logger, output_logger, sql_logger
 from app.schemas.openai_schema import OpenAISQLResponse
 from app.schemas.sql_schema import SQLValidationResult
 from app.services.openai_service import OpenAIService
+from app.services.query_history_service import QueryHistoryService
 from app.services.sql_executor import SQLExecutor
 from app.services.sql_validator import SQLValidator
-from app.services.query_history_service import QueryHistoryService
+
 
 class NLToSQLService:
     def __init__(self):

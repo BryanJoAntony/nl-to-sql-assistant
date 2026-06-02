@@ -18,9 +18,7 @@ from app.schemas.openai_schema import OpenAISQLResponse
 class OpenAIService:
     def __init__(self):
         if not settings.OPENAI_API_KEY:
-            raise ConfigurationException(
-                "OPENAI_API_KEY is not configured"
-            )
+            raise ConfigurationException("OPENAI_API_KEY is not configured")
 
         self.client = OpenAI(api_key=settings.OPENAI_API_KEY)
         self.model = settings.OPENAI_MODEL
@@ -51,15 +49,12 @@ class OpenAIService:
             content = response.choices[0].message.content
 
             if not content:
-                raise OpenAIServiceException(
-                    "OpenAI returned an empty response"
-                )
+                raise OpenAIServiceException("OpenAI returned an empty response")
 
             parsed_content = json.loads(content)
             sql_response = OpenAISQLResponse(**parsed_content)
 
             duration_ms = round((time.time() - start_time) * 1000, 2)
-
             usage = getattr(response, "usage", None)
 
             openai_logger.info(

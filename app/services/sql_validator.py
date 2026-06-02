@@ -46,7 +46,11 @@ class SQLValidator:
         checks_passed.append("no_comments")
 
         if self._has_multiple_statements(normalized_sql):
-            return self._blocked(sql, "Multiple SQL statements are not allowed", checks_passed)
+            return self._blocked(
+                sql,
+                "Multiple SQL statements are not allowed",
+                checks_passed,
+            )
 
         checks_passed.append("single_statement")
 
@@ -110,7 +114,8 @@ class SQLValidator:
         detected_columns = self._extract_columns(normalized_sql)
 
         unknown_columns = [
-            column for column in detected_columns
+            column
+            for column in detected_columns
             if column not in self.allowed_columns
             and column.lower() not in SQL_AGGREGATE_ALIASES
         ]
@@ -197,7 +202,12 @@ class SQLValidator:
         return any(pattern in sql for pattern in BLOCKED_SQL_PATTERNS)
 
     def _has_multiple_statements(self, sql: str) -> bool:
-        statements = [statement for statement in sqlparse.parse(sql) if str(statement).strip()]
+        statements = [
+            statement
+            for statement in sqlparse.parse(sql)
+            if str(statement).strip()
+        ]
+
         return len(statements) != 1
 
     def _is_select_query(self, sql: str) -> bool:
@@ -309,13 +319,33 @@ class SQLValidator:
 
     def _extract_columns(self, sql: str) -> list[str]:
         columns: list[str] = []
-
         parsed = sqlparse.parse(sql)
 
         if not parsed:
             return columns
 
         statement = parsed[0]
+
+        sql_keywords = {
+            "SELECT",
+            "FROM",
+            "WHERE",
+            "JOIN",
+            "INNER",
+            "LEFT",
+            "RIGHT",
+            "ON",
+            "AND",
+            "OR",
+            "GROUP",
+            "BY",
+            "ORDER",
+            "LIMIT",
+            "ASC",
+            "DESC",
+            "AS",
+            "HAVING",
+        }
 
         for token in statement.flatten():
             value = token.value
@@ -335,26 +365,7 @@ class SQLValidator:
             if upper_value in SQL_FUNCTION_ALLOWLIST:
                 continue
 
-            if upper_value in {
-                "SELECT",
-                "FROM",
-                "WHERE",
-                "JOIN",
-                "INNER",
-                "LEFT",
-                "RIGHT",
-                "ON",
-                "AND",
-                "OR",
-                "GROUP",
-                "BY",
-                "ORDER",
-                "LIMIT",
-                "ASC",
-                "DESC",
-                "AS",
-                "HAVING",
-            }:
+            if upper_value in sql_keywords:
                 continue
 
             if value.isnumeric():

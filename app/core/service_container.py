@@ -12,5 +12,11 @@ class ServiceContainer:
 
         return self._nl_to_sql_service
 
+    def override_nl_to_sql_service(self, service) -> None:
+        self._nl_to_sql_service = service
+
+    def reset(self) -> None:
+        self._nl_to_sql_service = None
+
 
 service_container = ServiceContainer()

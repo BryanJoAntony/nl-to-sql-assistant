@@ -17,10 +17,6 @@ data/*.db
 .git/
 .gitignore
 
-README.md
-docs/
-tests/
-
 manual_test_openai.py
 manual_test_validator.py
 check_env.py

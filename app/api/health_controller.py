@@ -1,10 +1,11 @@
 from flask import Blueprint
 
 from app.core.config import settings
+from app.core.rate_limiter import limiter
 from app.db.connection import get_db_connection
 from app.db.schema import ALLOWED_SCHEMA
 from app.utils.response_utils import success_response
-from app.core.rate_limiter import limiter
+
 
 health_blueprint = Blueprint("health", __name__)
 

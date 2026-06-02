@@ -1,11 +1,12 @@
 from flask import Blueprint, request
 
+from app.core.config import settings
+from app.core.rate_limiter import limiter
 from app.core.security import require_api_key
 from app.core.service_container import service_container
 from app.schemas.request_schema import QueryRequest
 from app.utils.response_utils import error_response, success_response
-from app.core.config import settings
-from app.core.rate_limiter import limiter
+
 
 query_blueprint = Blueprint("query", __name__)
 

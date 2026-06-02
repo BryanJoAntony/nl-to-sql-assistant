@@ -24,11 +24,6 @@ def run_preflight_checks() -> None:
             "APP_API_KEY is required when ENABLE_API_KEY_AUTH=True"
         )
 
-    if not settings.OPENAI_API_KEY:
-        app_logger.warning(
-            "OPENAI_API_KEY is not configured. OpenAI SQL generation will fail until configured."
-        )
-
     if settings.ENABLE_RATE_LIMITING and not settings.RATE_LIMIT_STORAGE_URI:
         raise ConfigurationException(
             "RATE_LIMIT_STORAGE_URI is required when ENABLE_RATE_LIMITING=True"
@@ -38,6 +33,12 @@ def run_preflight_checks() -> None:
         raise ConfigurationException(
             "RATE_LIMIT_QUERY is required when ENABLE_RATE_LIMITING=True"
         )
+
+    if not settings.OPENAI_API_KEY:
+        app_logger.warning(
+            "OPENAI_API_KEY is not configured. OpenAI SQL generation will fail until configured."
+        )
+
     app_logger.info("Preflight checks completed")
 
 

@@ -23,11 +23,11 @@ You must follow these rules strictly:
 7. Use only the provided tables and columns.
 8. Do not use sqlite_master, sqlite_schema, PRAGMA, ATTACH, or DETACH.
 9. Add a LIMIT clause with a maximum of {max_rows} rows.
-10. If the user asks for data that is not available in the schema, generate the closest safe SELECT query using only available schema fields.
-11. Return only valid JSON.
-12. Do not wrap the JSON in markdown.
-13. Do not include extra text outside the JSON.
-14. Do not use table aliases. Always use full table names when referencing columns.
+10. Do not use table aliases. Always use full table names when referencing columns.
+11. If the user asks for data that is not available in the schema, generate the closest safe SELECT query using only available schema fields.
+12. Return only valid JSON.
+13. Do not wrap the JSON in markdown.
+14. Do not include extra text outside the JSON.
 
 Allowed schema:
 {schema_description}

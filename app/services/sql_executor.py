@@ -18,7 +18,6 @@ class SQLExecutor:
         try:
             cursor = conn.cursor()
 
-            # Important:
             # Use execute(), never executescript().
             # executescript() can run multiple statements and is unsafe here.
             cursor.execute(sql)
