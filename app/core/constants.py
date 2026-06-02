@@ -52,5 +52,21 @@ SQL_AGGREGATE_ALIASES = {
     "average",
 }
 
+DESTRUCTIVE_INTENT_KEYWORDS = {
+    "delete",
+    "remove",
+    "drop",
+    "truncate",
+    "update",
+    "insert",
+    "alter",
+    "create",
+    "replace",
+    "modify",
+    "erase",
+    "wipe",
+    "clear",
+}
+
 DEFAULT_HEALTH_STATUS = "ok"
 DEFAULT_READY_STATUS = "ready"

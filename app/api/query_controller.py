@@ -24,9 +24,9 @@ def query_database():
 
     if result["safety"]["blocked"]:
         return error_response(
-            message="SQL validation blocked the generated query",
+            message="Request blocked by safety controls",
             status_code=400,
-            error_code="SQL_VALIDATION_BLOCKED",
+            error_code="REQUEST_BLOCKED_BY_SAFETY",
             details=result,
         )
 

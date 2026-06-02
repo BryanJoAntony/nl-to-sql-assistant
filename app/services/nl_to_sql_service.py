@@ -7,6 +7,7 @@ from app.services.openai_service import OpenAIService
 from app.services.query_history_service import QueryHistoryService
 from app.services.sql_executor import SQLExecutor
 from app.services.sql_validator import SQLValidator
+from app.services.question_intent_guard import QuestionIntentGuard
 
 
 class NLToSQLService:
@@ -15,6 +16,7 @@ class NLToSQLService:
         self.sql_validator = SQLValidator()
         self.sql_executor = SQLExecutor()
         self.query_history_service = QueryHistoryService()
+        self.question_intent_guard = QuestionIntentGuard()
 
     def process_question(self, question: str, dry_run: bool = False) -> dict[str, Any]:
         try:
@@ -24,6 +26,37 @@ class NLToSQLService:
                 dry_run,
             )
 
+            intent_result = self.question_intent_guard.check_question(question)
+
+            if intent_result["blocked"]:
+                result = {
+                    "question": question,
+                    "generated_sql": None,
+                    "final_sql": None,
+                    "explanation": "The request was blocked before SQL generation because it appears to ask for a destructive database operation.",
+                    "confidence": None,
+                    "dry_run": dry_run,
+                    "safety": {
+                        "is_safe": False,
+                        "blocked": True,
+                        "blocked_reason": intent_result["blocked_reason"],
+                        "checks_passed": [],
+                        "detected_tables": [],
+                        "detected_columns": [],
+                        "intent_guard": intent_result,
+                    },
+                    "execution": None,
+                }
+
+                self.query_history_service.save_query_history(result)
+
+                output_logger.info(
+                    "NL_TO_SQL_PIPELINE_BLOCKED_BY_INTENT | reason=%s",
+                    intent_result["blocked_reason"],
+                )
+
+                return result
+                
             generated_response: OpenAISQLResponse = self.openai_service.generate_sql(
                 question=question
             )
