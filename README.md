@@ -406,12 +406,17 @@ SQLite is used for portability and easy local setup. The database layer is separ
 
 ## Future Improvements
 
-- Docker support
 - PostgreSQL executor
 - SQL Server executor
-- Rate limiting
-- Authentication and authorization
-- Audit dashboard
-- Query history
-- Schema introspection
-- CI/CD workflow
+- read-only production database user
+- schema introspection from connected databases
+- query cost estimation before execution
+- role-based access control
+- audit dashboard for query history review
+- OpenAPI/Swagger UI page
+- frontend dashboard for asking questions and viewing results
+- Kubernetes deployment files
+- CI coverage reports
+- automated security scanning
+- configurable SQL policy profiles
+- prompt evaluation test set
