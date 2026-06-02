@@ -95,6 +95,20 @@ SQLite execution
 Structured response
 ```
 
+## Screenshots
+
+### Successful Query Response
+
+![Successful Query Response](docs/images/postman-success-response.png)
+
+### Blocked Query Response
+
+![Blocked Query Response](docs/images/postman-blocked-response.png)
+
+### GitHub Actions CI Passing
+
+![GitHub Actions CI Passing](docs/images/github-actions-passing.png)
+
 ## Database Tables
 
 The demo database uses synthetic data only.
@@ -244,6 +258,21 @@ Body:
   "dry_run": false
 }
 ```
+## Demo Questions
+
+You can test the API with questions such as:
+
+```
+Show employees in Engineering who joined after 2023
+How many active employees are there in each department?
+Show active projects with budget greater than 100000
+Show employees assigned to the Internal Analytics Platform
+Show attendance records where status is Leave
+Show average salary by department
+Show projects that are still active
+Show employees with salary greater than 80000
+```
+
 ## OpenAPI Specification
 
 This project includes a static OpenAPI specification:
@@ -353,6 +382,27 @@ Workflow file:
 SQLite is used as the default local database because it allows the project to run with minimal setup.
 
 The database access layer is separated so the project can later support other databases such as PostgreSQL or SQL Server.
+
+## Limitations
+
+This demo intentionally uses strict SQL validation rules.
+
+The first version blocks or avoids advanced SQL features such as:
+
+```
+UNION
+INTERSECT
+EXCEPT
+SELECT *
+subqueries
+complex SQL functions
+direct user-provided SQL execution
+database-specific SQL syntax
+```
+
+This is intentional because the project is designed to be secure-by-default.
+
+SQLite is used for portability and easy local setup. The database layer is separated so other databases such as PostgreSQL or SQL Server can be added later.
 
 ## Future Improvements
 
