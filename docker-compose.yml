@@ -1,0 +1,27 @@
+services:
+  app:
+    build: .
+    container_name: safe-nl-sql-app
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      FLASK_HOST: 0.0.0.0
+      FLASK_PORT: 5000
+      FLASK_DEBUG: "False"
+      ENABLE_MUTEX: "False"
+      RATE_LIMIT_STORAGE_URI: redis://redis:6379/0
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: safe-nl-sql-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
