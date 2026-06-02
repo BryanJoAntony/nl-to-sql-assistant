@@ -1,0 +1,140 @@
+openapi: 3.0.3
+
+info:
+  title: Safe NL-to-SQL Analytics Assistant API
+  version: 1.0.0
+  description: >
+    API documentation for the Safe NL-to-SQL Analytics Assistant.
+    This service converts natural language questions into safe SQL queries,
+    validates them, executes only approved SELECT queries, and returns
+    structured analytics results.
+
+servers:
+  - url: http://127.0.0.1:5000
+    description: Local development server
+
+paths:
+  /health:
+    get:
+      summary: Root health check
+      tags:
+        - Health
+      responses:
+        "200":
+          description: Service is running
+
+  /api/health:
+    get:
+      summary: API health check
+      tags:
+        - Health
+      responses:
+        "200":
+          description: API is healthy
+
+  /api/ready:
+    get:
+      summary: Readiness check
+      tags:
+        - Health
+      responses:
+        "200":
+          description: Service is ready
+        "503":
+          description: Service is not ready
+
+  /api/info:
+    get:
+      summary: Service metadata
+      tags:
+        - Info
+      responses:
+        "200":
+          description: Service information returned successfully
+
+  /api/query:
+    post:
+      summary: Ask a natural language analytics question
+      tags:
+        - Query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - question
+              properties:
+                question:
+                  type: string
+                  example: Show employees in Engineering who joined after 2023
+                dry_run:
+                  type: boolean
+                  example: false
+      responses:
+        "200":
+          description: Query processed successfully
+        "400":
+          description: SQL validation blocked the generated query or request body was invalid
+        "401":
+          description: Missing or invalid API key
+        "429":
+          description: Rate limit exceeded
+        "500":
+          description: Internal server error
+
+  /api/query-history:
+    get:
+      summary: Fetch query audit history
+      tags:
+        - Audit
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+          example: 10
+      responses:
+        "200":
+          description: Query history fetched successfully
+        "401":
+          description: Missing or invalid API key
+
+components:
+  schemas:
+    StandardSuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        request_id:
+          type: string
+          example: 7d1d8fd9-6c43-4fd4-8a61-1e9a87df91e2
+        message:
+          type: string
+          example: Query processed successfully
+        data:
+          type: object
+
+    StandardErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        request_id:
+          type: string
+          example: 7d1d8fd9-6c43-4fd4-8a61-1e9a87df91e2
+        message:
+          type: string
+          example: SQL validation blocked the generated query
+        error_code:
+          type: string
+          example: SQL_VALIDATION_BLOCKED
+        details:
+          type: object

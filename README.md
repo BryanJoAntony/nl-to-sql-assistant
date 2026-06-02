@@ -244,6 +244,13 @@ Body:
   "dry_run": false
 }
 ```
+## OpenAPI Specification
+
+This project includes a static OpenAPI specification:
+
+```
+docs/openapi.yaml
+```
 
 ## Safety Controls
 
